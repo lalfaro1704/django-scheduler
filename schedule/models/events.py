@@ -11,7 +11,7 @@ from django.db import models
 from django.db.models import Q
 from django.db.models.base import ModelBase
 from django.template.defaultfilters import date
-from django.urls import reverse
+from django.urls import reverse_lazy
 from django.utils import timezone
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.six import with_metaclass
@@ -113,7 +113,7 @@ class Event(with_metaclass(ModelBase, *get_model_bases('Event'))):
         return float(self.seconds) / 3600
 
     def get_absolute_url(self):
-        return reverse('event', args=[self.id])
+        return reverse_lazy('event', args=[self.id])
 
     def get_occurrences(self, start, end, clear_prefetch=True):
         """
@@ -622,9 +622,9 @@ class Occurrence(with_metaclass(ModelBase, *get_model_bases('Occurrence'))):
 
     def get_absolute_url(self):
         if self.pk is not None:
-            return reverse('occurrence', kwargs={'occurrence_id': self.pk,
+            return reverse_lazy('occurrence', kwargs={'occurrence_id': self.pk,
                                                  'event_id': self.event.id})
-        return reverse('occurrence_by_date', kwargs={
+        return reverse_lazy('occurrence_by_date', kwargs={
             'event_id': self.event.id,
             'year': self.start.year,
             'month': self.start.month,
@@ -636,9 +636,9 @@ class Occurrence(with_metaclass(ModelBase, *get_model_bases('Occurrence'))):
 
     def get_cancel_url(self):
         if self.pk is not None:
-            return reverse('cancel_occurrence', kwargs={'occurrence_id': self.pk,
+            return reverse_lazy('cancel_occurrence', kwargs={'occurrence_id': self.pk,
                                                         'event_id': self.event.id})
-        return reverse('cancel_occurrence_by_date', kwargs={
+        return reverse_lazy('cancel_occurrence_by_date', kwargs={
             'event_id': self.event.id,
             'year': self.start.year,
             'month': self.start.month,
@@ -650,9 +650,9 @@ class Occurrence(with_metaclass(ModelBase, *get_model_bases('Occurrence'))):
 
     def get_edit_url(self):
         if self.pk is not None:
-            return reverse('edit_occurrence', kwargs={'occurrence_id': self.pk,
+            return reverse_lazy('edit_occurrence', kwargs={'occurrence_id': self.pk,
                                                       'event_id': self.event.id})
-        return reverse('edit_occurrence_by_date', kwargs={
+        return reverse_lazy('edit_occurrence_by_date', kwargs={
             'event_id': self.event.id,
             'year': self.start.year,
             'month': self.start.month,

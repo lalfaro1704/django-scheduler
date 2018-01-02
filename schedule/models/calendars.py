@@ -7,7 +7,7 @@ from django.db import models
 from django.db.models import Q
 from django.db.models.base import ModelBase
 from django.template.defaultfilters import slugify
-from django.urls import reverse
+from django.urls import reverse_lazy
 from django.utils import timezone
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.six import with_metaclass
@@ -181,11 +181,11 @@ class Calendar(with_metaclass(ModelBase, *get_model_bases('Calendar'))):
 
     def get_absolute_url(self):
         if USE_FULLCALENDAR:
-            return reverse('fullcalendar', kwargs={'calendar_slug': self.slug})
-        return reverse('calendar_home', kwargs={'calendar_slug': self.slug})
+            return reverse_lazy('fullcalendar', kwargs={'calendar_slug': self.slug})
+        return reverse_lazy('calendar_home', kwargs={'calendar_slug': self.slug})
 
     def add_event_url(self):
-        return reverse('calendar_create_event', args=[self.slug])
+        return reverse_lazy('calendar_create_event', args=[self.slug])
 
 
 class CalendarRelationManager(models.Manager):
